@@ -16,10 +16,12 @@ export class CatsController {
     return this.catsService.getCats();
   }
 
-  // Pipe
-  // 컨트롤러 라우트 핸들러로 주로 사용됨.
+  // Pipe : 클라이언트에서 요청으로 들어온 데이터를 유효성 검사 및 변환을 수행하여 서버가 원하는 데이터를 얻도록 도와주는 클래스
+  // nest의 pipe 개념은 pipe 패턴에 영감을 받은 것임. pipe 패턴은 함수형 프로그래밍의 원리에 따른 패턴으로, 각각의 기능들의 의존성이 낮고 독립성이 높음.
+  // nest는 특정 타입변환validation을 수행하는 각각의 기능들 하나하나를 파이프라고 간주.
   // 타입변환/validation 목적으로 사용됨.(:id에서 number로 변환이 안되는 데이터는 에러처리함.)
   // 여러 타입에 걸쳐서 Pipe는 이용할 수 있음.
+
   @Get(':id')
   getOneCat(@Param('id', ParseIntPipe) param) {
     return 'get one cat api';
