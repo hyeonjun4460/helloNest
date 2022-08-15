@@ -1,5 +1,5 @@
 import { CatsService } from './cats.service';
-import { Controller, Delete, Get, HttpException, Patch, Post, UseFilters } from '@nestjs/common';
+import { Controller, Delete, Get, HttpException, Param, ParseIntPipe, Patch, Post, UseFilters } from '@nestjs/common';
 import { HttpExceptionFilter } from 'src/http-exception.filter';
 
 @Controller('cats')
@@ -16,6 +16,14 @@ export class CatsController {
     return this.catsService.getCats();
   }
 
+  // Pipe
+  // 컨트롤러 라우트 핸들러로 주로 사용됨.
+  // 타입변환/validation 목적으로 사용됨.(:id에서 number로 변환이 안되는 데이터는 에러처리함.)
+  // 여러 타입에 걸쳐서 Pipe는 이용할 수 있음.
+  @Get(':id')
+  getOneCat(@Param('id', ParseIntPipe) param) {
+    return 'get one cat api';
+  }
   @Post()
   creatCat() {
     return 'post cat';
