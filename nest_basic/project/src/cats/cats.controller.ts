@@ -1,19 +1,21 @@
 import { CatsService } from './cats.service';
-import { Controller, Delete, Get, HttpException, Param, ParseIntPipe, Patch, Post, UseFilters } from '@nestjs/common';
-import { HttpExceptionFilter } from 'src/http-exception.filter';
+import { Controller, Delete, Get, HttpException, Param, ParseIntPipe, Patch, Post, UseFilters, UseInterceptors } from '@nestjs/common';
+import { HttpExceptionFilter } from 'src/common/exception/http-exception.filter';
+import { SuccessInterceptor } from 'src/common/interceptor/success.interceptor';
 
 @Controller('cats')
+@UseInterceptors(SuccessInterceptor) // success interceptor 의존성 주입
+@UseFilters(HttpExceptionFilter) // exception filter 의존성 주입
 export class CatsController {
   constructor(private readonly catsService: CatsService) {}
 
   @Get()
-  @UseFilters(HttpExceptionFilter)
-  getCats(): string {
+  getCats() {
+    console.log('get all cats');
     // nest에서 예외 에러 발생에 활용되는 인터페아스: HttpException = new Error()
     // 에러는 오버라이딩 해서 커스텀할 수 있음.
     // 예외처리는 모든 컨트롤러에 적는 것이 아니라, 예외처리 미들웨어를 생성하여 일괄적으로 처리하게 함. => 코드 재사용성 up
-    throw new HttpException('api is broken', 401);
-    return this.catsService.getCats();
+    return { cats: 'all cats' };
   }
 
   // Pipe : 클라이언트에서 요청으로 들어온 데이터를 유효성 검사 및 변환을 수행하여 서버가 원하는 데이터를 얻도록 도와주는 클래스
@@ -24,6 +26,7 @@ export class CatsController {
 
   @Get(':id')
   getOneCat(@Param('id', ParseIntPipe) param) {
+    console.log(param);
     return 'get one cat api';
   }
   @Post()
