@@ -1,5 +1,5 @@
 import { CatsService } from './cats.service';
-import { Controller, Get, HttpException, Param, ParseIntPipe, Patch, Post, UseFilters, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, Param, ParseIntPipe, Patch, Post, UseFilters, UseInterceptors } from '@nestjs/common';
 import { HttpExceptionFilter } from 'src/common/exception/http-exception.filter';
 import { SuccessInterceptor } from 'src/common/interceptor/success.interceptor';
 
@@ -15,7 +15,8 @@ export class CatsController {
   }
 
   @Post()
-  async signUp() {
+  async signUp(@Body() body) {
+    console.log(body);
     return 'signup';
   }
 
