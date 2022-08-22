@@ -34,6 +34,17 @@ export class Cat extends Document {
   @Prop()
   @IsString()
   imgUrl: string;
+
+  readonly readOnlyDATA: { email: string; name: string }; // response용으로 생성한 virtudalData를 class의 readonly 변수로 지정.
 }
 
+// virutal field를 이용해서 클라이언트 단에 보여줘야하는 데이터만 따로 field로 생성
+
 export const CatSchema = SchemaFactory.createForClass(Cat);
+
+CatSchema.virtual('readOnlyDATA').get(function (this: Cat) {
+  return {
+    email: this.email,
+    name: this.name,
+  };
+});
