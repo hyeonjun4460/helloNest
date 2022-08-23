@@ -3,6 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Module } from '@nestjs/common';
 import { CatsController } from './cats.controller';
 import { CatsService } from './cats.service';
+import { CatsRepository } from './cats.repository';
 
 // nest는 모든 구조가 "모듈"로 되어 있다.
 // 모듈은 controller(요청/응답 처리) + provider(비즈니스로직)로 구성된다.
@@ -11,7 +12,7 @@ import { CatsService } from './cats.service';
 @Module({
   imports: [MongooseModule.forFeature([{ name: Cat.name, schema: CatSchema }])], // DB Query 작업을 위해, schema import
   controllers: [CatsController],
-  providers: [CatsService], //
+  providers: [CatsService, CatsRepository], //
   exports: [CatsService],
 })
 export class CatsModule {}
