@@ -15,7 +15,7 @@ export class CatsService {
   async signup(body: CatRequestDto) {
     const { email, name, password } = body;
     const isCatExist = await this.catsRepository.existsByEmail(email); // 중복 확인하는 mongoose method
-    if (isCatExist) {
+    if (isCatExist.success === true) {
       // throw new HttpException('해당하는 고양이는 이미 존재합니다.', 403); 아래와 동일.
       throw new UnauthorizedException('해당하는 고양이는 이미 존재합니다.');
     }

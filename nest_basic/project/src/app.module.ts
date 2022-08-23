@@ -5,10 +5,11 @@ import { CatsModule } from './cats/cats.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { LoggerMiddleware } from './logger.middleware';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
 import mongoose from 'mongoose';
 
 @Module({
-  imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MONGO_URI), CatsModule], // mongo DB 연결
+  imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MONGO_URI), CatsModule, AuthModule], // mongo DB 연결
   controllers: [AppController],
   providers: [AppService],
 })
