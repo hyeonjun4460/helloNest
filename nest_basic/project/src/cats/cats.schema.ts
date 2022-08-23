@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, SchemaOptions } from 'mongoose';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator'; // 클래스 벨리데이터, 클래스에 삽입되는 멤버변수들의 validation.
+import { ApiProperty } from '@nestjs/swagger';
 // 스키마와 관련된 옵션
 const options: SchemaOptions = {
   timestamps: true, // DB에서 스키마 생성 시 일자를 출력
@@ -8,6 +9,12 @@ const options: SchemaOptions = {
 
 @Schema(options)
 export class Cat extends Document {
+  @ApiProperty({
+    // swagger에서 각 값에 대한 설명 추가
+    example: 'example@naver.com',
+    description: 'email',
+    required: true,
+  })
   @Prop({
     //스키마에 들어가는 각 데이터들의 옵션 설정
     required: true,
@@ -17,6 +24,11 @@ export class Cat extends Document {
   @IsNotEmpty()
   email: string;
 
+  @ApiProperty({
+    example: 'hello',
+    description: 'name',
+    required: true,
+  })
   @Prop({
     required: true,
   })
@@ -24,6 +36,11 @@ export class Cat extends Document {
   @IsNotEmpty()
   name: string;
 
+  @ApiProperty({
+    example: 'asdqwe',
+    description: 'password',
+    required: true,
+  })
   @Prop({
     required: true,
   })
@@ -31,6 +48,11 @@ export class Cat extends Document {
   @IsNotEmpty()
   password: string;
 
+  @ApiProperty({
+    example: 'imgUrl',
+    description: 'email',
+    required: true,
+  })
   @Prop()
   @IsString()
   imgUrl: string;
