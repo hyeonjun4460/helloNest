@@ -4,6 +4,7 @@ import { Module, forwardRef } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { ConfigModule } from '@nestjs/config';
+import { jwtStrategy } from './jwt.strategy';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -15,7 +16,7 @@ import { ConfigModule } from '@nestjs/config';
     }),
     forwardRef(() => CatsModule), // 역할과 책임을 분명하게 하기 위해, CatsRepository는 auth의 provider가 아니라 catsmodule로 import해서 사용
   ],
-  providers: [AuthService],
+  providers: [AuthService, jwtStrategy], // guard에서 strategy가 실행하게 하려면 provider에 등록해야한다.
   exports: [AuthService],
 })
 export class AuthModule {}

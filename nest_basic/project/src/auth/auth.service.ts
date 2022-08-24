@@ -19,7 +19,7 @@ export class AuthService {
     if (!isPasswordValidated) {
       throw new UnauthorizedException('이메일과 비밀번호를 확인해주세요');
     }
-    const payload = { email };
+    const payload = { email, id: cat.data._id };
     return {
       token: this.jwtService.sign(payload),
     };

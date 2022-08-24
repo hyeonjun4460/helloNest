@@ -1,12 +1,14 @@
 import { AuthService } from './../auth/auth.service';
 import { CatsService } from './cats.service';
-import { Body, Controller, Delete, Get, HttpException, Param, ParseIntPipe, Patch, Post, UseFilters, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, Param, ParseIntPipe, Patch, Post, Req, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
 import { HttpExceptionFilter } from 'src/common/exception/http-exception.filter';
 import { SuccessInterceptor } from 'src/common/interceptor/success.interceptor';
 import { CatRequestDto } from './dto/cats.request.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ReadOnlyCatDto } from './dto/cats.response.dto';
 import { LoginRequestDto } from 'src/auth/dto/login.request.dto';
+import { jwtGuard } from 'src/auth/jwt.guard';
+import { Request } from 'express';
 
 @Controller('cats')
 @UseInterceptors(SuccessInterceptor) // success interceptor 의존성 주입
@@ -14,10 +16,11 @@ import { LoginRequestDto } from 'src/auth/dto/login.request.dto';
 export class CatsController {
   constructor(private readonly catsService: CatsService, private readonly authService: AuthService) {} // cat service 의존성 주입
 
-  @ApiOperation({ summary: '전체 조회' })
+  @ApiOperation({ summary: '현재 고양이 조회' })
+  @UseGuards(jwtGuard) // jwt guard를 실행
   @Get()
-  getCurrentCat() {
-    return 'current cat';
+  getCurrentCat(@Req() req: Request) {
+    return req.user; // guard를 통과해서 할당받은 값.
   }
 
   @ApiOperation({ summary: '회원가입' }) //swagger에서 api summary

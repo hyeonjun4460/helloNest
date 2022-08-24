@@ -27,4 +27,8 @@ export class CatsRepository {
     // Promise로 resolve된 값이 cat 타입이어야 함.
     return await this.catModel.create(cat);
   }
+
+  async findCatById(id: string): Promise<Cat | null> {
+    return await this.catModel.findOne({ _id: id }).select('-password'); // select = password를 제외하고 출력 == select('email name')
+  }
 }
