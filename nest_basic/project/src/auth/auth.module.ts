@@ -12,7 +12,7 @@ import { jwtStrategy } from './jwt.strategy';
     JwtModule.register({
       // jwt 토큰 생성용 모듈, 이게 있어야 jwtService를 의존성 주입 가능
       secret: process.env.secretKey,
-      signOptions: { expiresIn: '60s' }, // 만료기간
+      signOptions: { expiresIn: process.env.expiredTime }, // 만료기간
     }),
     forwardRef(() => CatsModule), // 역할과 책임을 분명하게 하기 위해, CatsRepository는 auth의 provider가 아니라 catsmodule로 import해서 사용
   ],

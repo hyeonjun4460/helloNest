@@ -9,6 +9,7 @@ import { ReadOnlyCatDto } from './dto/cats.response.dto';
 import { LoginRequestDto } from 'src/auth/dto/login.request.dto';
 import { jwtGuard } from 'src/auth/jwt.guard';
 import { Request } from 'express';
+import { User } from 'src/common/decorator/user.decorator';
 
 @Controller('cats')
 @UseInterceptors(SuccessInterceptor) // success interceptor 의존성 주입
@@ -19,8 +20,8 @@ export class CatsController {
   @ApiOperation({ summary: '현재 고양이 조회' })
   @UseGuards(jwtGuard) // jwt guard를 실행
   @Get()
-  getCurrentCat(@Req() req: Request) {
-    return req.user; // guard를 통과해서 할당받은 값.
+  getCurrentCat(@User() cat) {
+    return cat; // guard를 통과해서 할당받은 값.
   }
 
   @ApiOperation({ summary: '회원가입' }) //swagger에서 api summary
