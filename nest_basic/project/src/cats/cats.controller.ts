@@ -1,6 +1,6 @@
 import { AuthService } from './../auth/auth.service';
 import { CatsService } from './cats.service';
-import { Body, Controller, Delete, Get, HttpException, Param, ParseIntPipe, Patch, Post, Req, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, Param, ParseIntPipe, Patch, Post, Req, UploadedFiles, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
 import { HttpExceptionFilter } from 'src/common/exception/http-exception.filter';
 import { SuccessInterceptor } from 'src/common/interceptor/success.interceptor';
 import { CatRequestDto } from './dto/cats.request.dto';
@@ -10,6 +10,9 @@ import { LoginRequestDto } from 'src/auth/dto/login.request.dto';
 import { jwtGuard } from 'src/auth/jwt.guard';
 import { Request } from 'express';
 import { User } from 'src/common/decorator/user.decorator';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { multerOptions } from 'src/common/utils/multer.options';
+import { Cat } from './cats.schema';
 
 @Controller('cats')
 @UseInterceptors(SuccessInterceptor) // success interceptor 의존성 주입
@@ -20,7 +23,9 @@ export class CatsController {
   @ApiOperation({ summary: '현재 고양이 조회' })
   @UseGuards(jwtGuard) // jwt guard를 실행
   @Get()
-  getCurrentCat(@User() cat) {
+  getCurrentCat(
+    @User() cat, //custom decoration으로 만든 파라메터 common -> decorator에서 확인 가능
+  ) {
     return cat; // guard를 통과해서 할당받은 값.
   }
 
@@ -35,21 +40,18 @@ export class CatsController {
     return await this.catsService.signup(body);
   }
 
-  @ApiOperation({ summary: '로그아웃' })
+  @ApiOperation({ summary: '로그인' })
   @Post('login')
   login(@Body() body: LoginRequestDto) {
     return this.authService.jwtLogIn(body);
   }
 
-  @ApiOperation({ summary: '로그아웃' })
-  @Post('logout')
-  logout() {
-    return 'logout';
-  }
-
   @ApiOperation({ summary: '이미지 업로드' })
-  @Post('upload/cat')
-  uploadCatImg() {
-    return 'upload img';
+  @UseInterceptors(FilesInterceptor('image', 10, multerOptions('cats'))) // image라는 키에 들어온 파일을 + 최대 10개 제한으로 +  cats라는 폴더에 저장, 저장된 폴더/파일은 dist 폴더에서 확인 가능
+  @UseGuards(jwtGuard) // jwt guard를 실행
+  @Post('upload')
+  uploadCatImg(@UploadedFiles() files: Array<Express.Multer.File>, @User() cat: Cat) {
+    console.log(files);
+    return this.catsService.uploadImg(cat, files);
   }
 }

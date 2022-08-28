@@ -53,11 +53,13 @@ export class Cat extends Document {
     description: 'email',
     required: true,
   })
-  @Prop()
+  @Prop({
+    default: `http://localhost:8000/media/cats/chickenCharacter1661694642810.png`,
+  })
   @IsString()
   imgUrl: string;
 
-  readonly readOnlyDATA: { email: string; name: string }; // response용으로 생성한 virtudalData를 class의 readonly 변수로 지정.
+  readonly readOnlyDATA: { email: string; name: string; imgUrl: string }; // response용으로 생성한 virtudalData를 class의 readonly 변수로 지정.
 }
 
 // virutal field를 이용해서 클라이언트 단에 보여줘야하는 데이터만 따로 field로 생성
@@ -68,5 +70,6 @@ CatSchema.virtual('readOnlyDATA').get(function (this: Cat) {
   return {
     email: this.email,
     name: this.name,
+    imgUrl: this.imgUrl, // 기본 이미지 추가에 따라서, RESPONSE용 데이터에 이미지 추가
   };
 });

@@ -2,6 +2,7 @@ import { CatsRepository } from './cats.repository';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { CatRequestDto } from './dto/cats.request.dto';
+import { Cat } from './cats.schema';
 
 @Injectable()
 export class CatsService {
@@ -22,5 +23,12 @@ export class CatsService {
     const hashPassword = await bcrypt.hash(password, 10); // bcrypt로 암호화
     const cat = await this.catsRepository.create({ email, name, password: hashPassword });
     return cat.readOnlyDATA; // response 용 readOnlydata를 return해서 보안 지키기
+  }
+
+  async uploadImg(cat: Cat, files: Array<Express.Multer.File>) {
+    console.log(cat);
+    const fileName = `cats/${files[0].filename}`;
+    const newCat = await this.catsRepository.findByIdAndUpdateImg(cat.email, fileName);
+    return newCat;
   }
 }

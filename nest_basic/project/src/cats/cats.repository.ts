@@ -31,4 +31,17 @@ export class CatsRepository {
   async findCatById(id: string): Promise<Cat | null> {
     return await this.catModel.findOne({ _id: id }).select('-password'); // select = password를 제외하고 출력 == select('email name')
   }
+
+  async findByIdAndUpdateImg(email: string, fileName: string) {
+    try {
+      const cat = await this.catModel.findOne({ email }); // 유저를 찾고
+      cat.imgUrl = `http://localhost:8000/media/${fileName}`; // 유저에게 imgUrl 업데이트
+      const newCat = await cat.save(); // cat에 추가된 사항을 저장하는 mongoose query
+      console.log(newCat);
+
+      return newCat.readOnlyDATA; // response용 data를 return
+    } catch {
+      throw new HttpException('여기서 db error', 400);
+    }
+  }
 }
