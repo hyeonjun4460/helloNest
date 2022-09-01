@@ -43,6 +43,7 @@ export class CatsController {
   @ApiOperation({ summary: '로그인' })
   @Post('login')
   login(@Body() body: LoginRequestDto) {
+    console.log(body);
     return this.authService.jwtLogIn(body);
   }
 
@@ -51,7 +52,12 @@ export class CatsController {
   @UseGuards(jwtGuard) // jwt guard를 실행
   @Post('upload')
   uploadCatImg(@UploadedFiles() files: Array<Express.Multer.File>, @User() cat: Cat) {
-    console.log(files);
     return this.catsService.uploadImg(cat, files);
+  }
+
+  @ApiOperation({ summary: '모든 고양이 가져오기' })
+  @Get('all')
+  getAllCat() {
+    return this.catsService.getAllCat();
   }
 }

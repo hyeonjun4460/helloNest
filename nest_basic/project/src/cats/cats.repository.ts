@@ -41,7 +41,15 @@ export class CatsRepository {
 
       return newCat.readOnlyDATA; // response용 data를 return
     } catch {
-      throw new HttpException('여기서 db error', 400);
+      throw new HttpException('db error', 400);
+    }
+  }
+
+  async findAll() {
+    try {
+      return await this.catModel.find();
+    } catch {
+      throw new HttpException('db error', 400);
     }
   }
 }

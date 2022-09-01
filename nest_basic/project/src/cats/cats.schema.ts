@@ -54,7 +54,7 @@ export class Cat extends Document {
     required: true,
   })
   @Prop({
-    default: `http://localhost:8000/media/cats/chickenCharacter1661694642810.png`,
+    default: `http://localhost:8000/media/cats/chickenCharacter1661694642810.png`, // default 값 설정
   })
   @IsString()
   imgUrl: string;
