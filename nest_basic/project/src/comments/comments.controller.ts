@@ -6,6 +6,7 @@ import { SuccessInterceptor } from 'src/common/interceptor/success.interceptor';
 import { jwtGuard } from 'src/auth/jwt.guard';
 import { Request } from 'express';
 import { User } from 'src/common/decorator/user.decorator';
+import { Types } from 'mongoose';
 
 @UseInterceptors(SuccessInterceptor)
 @UseFilters(HttpExceptionFilter)

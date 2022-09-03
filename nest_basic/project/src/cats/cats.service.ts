@@ -9,10 +9,6 @@ export class CatsService {
   //DB query 작업을 위해, schema 의존성 주입, schema의 타입은 Cat에 따름.
   constructor(private readonly catsRepository: CatsRepository) {}
 
-  getCats(): string {
-    return 'hello cats';
-  }
-
   async signup(body: CatRequestDto) {
     const { email, name, password } = body;
     const isCatExist = await this.catsRepository.existsByEmail(email); // 중복 확인하는 mongoose method

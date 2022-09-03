@@ -16,9 +16,4 @@ export class AppController {
     // body, pararm은 DTO body에 validation을 줄 수 있음..
     return this.appService.getHello();
   }
-
-  @Get('test')
-  getCats(): string {
-    return this.catsService.getCats();
-  }
 }

@@ -19,7 +19,7 @@ export class Comments extends Document {
     //스키마에 들어가는 각 데이터들의 옵션 설정
     type: Types.ObjectId, // ObjectId의 타입. mongoose에서 string으로 변환해주기는 함.
     required: true,
-    ref: 'cats', // cats 테이블과 관계설정
+    ref: 'cats',
   })
   @IsNotEmpty()
   author: Types.ObjectId;

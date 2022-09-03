@@ -7,7 +7,7 @@ import { LoggerMiddleware } from './logger.middleware';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { CommentsModule } from './comments/comments.module';
-import mongoose from 'mongoose';
+import * as mongoose from 'mongoose';
 
 @Module({
   imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MONGO_URI), CatsModule, AuthModule, CommentsModule], // mongo DB 연결
