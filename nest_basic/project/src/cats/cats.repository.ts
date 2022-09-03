@@ -1,6 +1,6 @@
 import { HttpException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Cat } from './cats.schema';
 import { CatRequestDto } from './dto/cats.request.dto';
 
@@ -28,7 +28,7 @@ export class CatsRepository {
     return await this.catModel.create(cat);
   }
 
-  async findCatById(id: string): Promise<Cat | null> {
+  async findCatById(id: string | Types.ObjectId): Promise<Cat | null> {
     return await this.catModel.findOne({ _id: id }).select('-password'); // select = password를 제외하고 출력 == select('email name')
   }
 

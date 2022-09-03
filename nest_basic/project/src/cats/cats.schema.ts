@@ -70,6 +70,7 @@ CatSchema.virtual('readOnlyDATA').get(function (this: Cat) {
   return {
     email: this.email,
     name: this.name,
-    imgUrl: this.imgUrl, // 기본 이미지 추가에 따라서, RESPONSE용 데이터에 이미지 추가
+    imgUrl: this.imgUrl,
+    _id: this._id, // 기본 이미지 추가에 따라서, RESPONSE용 데이터에 이미지 추가
   };
 });
